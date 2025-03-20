@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4CAF50;
+            --primary-dark: #45a049;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --bg-dark: rgba(51, 51, 51, 0.95);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(76, 175, 80, 0.5); }
+            100% { box-shadow: 0 0 5px rgba(76, 175, 80, 0.3); }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: var(--text-dark);
+        }
+
+        .navbar {
+            background-color: var(--bg-dark);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .navbar:hover {
+            background-color: rgba(51, 51, 51, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-brand {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: relative;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navbar-brand i {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            position: relative;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a i {
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .username {
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background-color: rgba(76, 175, 80, 0.1);
+            border-radius: 4px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .username i {
+            font-size: 1.1rem;
+        }
+
+        .username:hover {
+            background-color: rgba(76, 175, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: var(--text-light);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn i {
+            font-size: 1.1rem;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .logout-btn:hover::before {
+            left: 100%;
+        }
+
+        .logout-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .language-selector {
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .language-selector select {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234CAF50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1em;
+            transition: var(--transition);
+        }
+
+        .language-selector select:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+        }
+
+        .language-selector select option {
+            background-color: #333;
+            color: var(--text-light);
+            padding: 0.5rem;
+        }
+
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('app icon1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(76, 175, 80, 0.1), rgba(69, 160, 73, 0.1));
+            animation: gradientFlow 15s ease infinite;
+            z-index: 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon::after {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .testimonials {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .testimonial-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        .author-info h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .about {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(76, 175, 80, 0.05), rgba(69, 160, 73, 0.05));
+            animation: gradientFlow 15s ease infinite;
+            z-index: 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .about-card:nth-child(1) { animation-delay: 0.2s; }
+        .about-card:nth-child(2) { animation-delay: 0.4s; }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .about-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .about-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-icon::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: transform 0.3s ease;
+        }
+
+        .about-card:hover .about-icon::after {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .about-card h3 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-card ul li {
+            color: #666;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.4;
+            transition: transform 0.3s ease;
+        }
+
+        .about-card ul li:hover {
+            transform: translateX(5px);
+            color: var(--primary-color);
+        }
+
+        .about-card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .about-card ul li:hover::before {
+            transform: translateX(5px);
+        }
+
+        .contact {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(76, 175, 80, 0.05), rgba(69, 160, 73, 0.05));
+            animation: gradientFlow 15s ease infinite;
+            z-index: 0;
+        }
+
+        .contact-grid {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            animation: scaleIn 0.5s ease forwards;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .contact-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-icon::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-card:hover .contact-icon::after {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .contact-card h3 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .contact-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .contact-card a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(76, 175, 80, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .form-message.success {
+            display: block;
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            border: 1px solid #2e7d32;
+        }
+
+        .form-message.error {
+            display: block;
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #d32f2f;
+            border: 1px solid #d32f2f;
+        }
+
+        .submit-btn.loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .features-grid,
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .feature-card,
+            .about-card,
+            .contact-card {
+                margin: 0 1rem;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .hero h1 {
+                font-size: 4rem;
+            }
+
+            .hero p {
+                font-size: 1.6rem;
+            }
+
+            .section-title h2 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <i class="fas fa-robot"></i>
+            AI Test Generator
+        </a>
+        <div class="nav-links">
+            <a href="#features"><i class="fas fa-star"></i> Features</a>
+            <a href="#about"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+        </div>
+        <div class="user-menu">
+            <span class="username">
+                <i class="fas fa-user"></i>
+                <span id="username-display">Loading...</span>
+            </span>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="he">עברית</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>AI-Powered Test Generation</h1>
+            <p>Transform your study experience with our intelligent test generator. Get personalized practice tests, instant feedback, and improve your academic performance with cutting-edge AI technology.</p>
+            <a href="#features" class="cta-button">Start Learning</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>Smart Features</h2>
+            <p>Experience the future of test preparation with our advanced AI-powered platform</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI-Powered Generation</h3>
+                <p>Our advanced AI analyzes your study materials and generates personalized practice tests tailored to your learning needs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Performance Analytics</h3>
+                <p>Track your progress with detailed analytics, identify your strengths and weaknesses, and get personalized study recommendations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Study Groups</h3>
+                <p>Connect with classmates, share study materials, and collaborate on practice tests to enhance your learning experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="section-title">
+            <h2>Our Mission</h2>
+            <p>Empowering students and teachers with AI-powered learning solutions</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-card">
+                <div class="about-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>For Students</h3>
+                <p>We believe every student deserves personalized learning support. Our AI-powered platform helps you:</p>
+                <ul>
+                    <li>Get personalized practice tests based on your learning style</li>
+                    <li>Receive instant feedback on your performance</li>
+                    <li>Track your progress and identify areas for improvement</li>
+                    <li>Learn at your own pace with adaptive difficulty</li>
+                    <li>Collaborate with classmates in study groups</li>
+                </ul>
+            </div>
+            <div class="about-card">
+                <div class="about-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h3>For Teachers</h3>
+                <p>We make test creation and assessment easier for educators:</p>
+                <ul>
+                    <li>Generate diverse test questions automatically</li>
+                    <li>Save time on test preparation and grading</li>
+                    <li>Get insights into student performance</li>
+                    <li>Create customized tests for different learning levels</li>
+                    <li>Track class progress and identify struggling students</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <div class="section-title">
+            <h2>Student Success Stories</h2>
+            <p>See how students are improving their grades with our AI test generator</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "The AI-generated tests have completely transformed my study routine. I've seen a significant improvement in my grades!"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JD</div>
+                    <div class="author-info">
+                        <h4>John Doe</h4>
+                        <p>Computer Science Student</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "The personalized feedback and analytics have helped me identify my weak areas and improve them effectively."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AS</div>
+                    <div class="author-info">
+                        <h4>Alice Smith</h4>
+                        <p>Engineering Student</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    "The study group feature is amazing! I've learned so much from collaborating with other students."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MJ</div>
+                    <div class="author-info">
+                        <h4>Mike Johnson</h4>
+                        <p>Mathematics Student</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our team</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p><a href="mailto:aistudentsoffical@gmail.com">aistudentsoffical@gmail.com</a></p>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                        <div id="formMessage" class="form-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Display username
+        document.getElementById('username-display').textContent = localStorage.getItem('username') || 'User';
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        }
+
+        // Get current language from localStorage or default to English
+        let currentLang = localStorage.getItem('language') || 'en';
+
+        // Load translations
+        const translations = {
+            en: {
+                features: "Features",
+                about: "About",
+                contact: "Contact",
+                logout: "Logout",
+                welcome: "AI-Powered Test Generation",
+                heroText: "Transform your study experience with our intelligent test generator. Get personalized practice tests, instant feedback, and improve your academic performance with cutting-edge AI technology.",
+                getStarted: "Start Learning",
+                featuresTitle: "Smart Features",
+                featuresSubtitle: "Experience the future of test preparation with our advanced AI-powered platform",
+                ecoTracking: "AI-Powered Generation",
+                ecoTrackingDesc: "Our advanced AI analyzes your study materials and generates personalized practice tests tailored to your learning needs.",
+                community: "Performance Analytics",
+                communityDesc: "Track your progress with detailed analytics, identify your strengths and weaknesses, and get personalized study recommendations.",
+                analytics: "Study Groups",
+                analyticsDesc: "Connect with classmates, share study materials, and collaborate on practice tests to enhance your learning experience.",
+                testimonialsTitle: "Student Success Stories",
+                testimonialsSubtitle: "See how students are improving their grades with our AI test generator",
+                aboutTitle: "Our Mission",
+                aboutSubtitle: "Empowering students and teachers with AI-powered learning solutions",
+                forStudents: "For Students",
+                forTeachers: "For Teachers",
+                studentBenefits: "We believe every student deserves personalized learning support. Our AI-powered platform helps you:",
+                teacherBenefits: "We make test creation and assessment easier for educators:",
+                studentList1: "Get personalized practice tests based on your learning style",
+                studentList2: "Receive instant feedback on your performance",
+                studentList3: "Track your progress and identify areas for improvement",
+                studentList4: "Learn at your own pace with adaptive difficulty",
+                studentList5: "Collaborate with classmates in study groups",
+                teacherList1: "Generate diverse test questions automatically",
+                teacherList2: "Save time on test preparation and grading",
+                teacherList3: "Get insights into student performance",
+                teacherList4: "Create customized tests for different learning levels",
+                teacherList5: "Track class progress and identify struggling students"
+            },
+            es: {
+                features: "Características",
+                about: "Acerca de",
+                contact: "Contacto",
+                logout: "Cerrar Sesión",
+                welcome: "Generación de Pruebas con IA",
+                heroText: "Transforma tu experiencia de estudio con nuestro generador de pruebas inteligente. Obtén pruebas de práctica personalizadas, retroalimentación instantánea y mejora tu rendimiento académico con tecnología de IA de vanguardia.",
+                getStarted: "Comenzar a Aprender",
+                featuresTitle: "Características Inteligentes",
+                featuresSubtitle: "Experimenta el futuro de la preparación de pruebas con nuestra plataforma avanzada impulsada por IA",
+                ecoTracking: "Generación con IA",
+                ecoTrackingDesc: "Nuestra IA avanzada analiza tus materiales de estudio y genera pruebas de práctica personalizadas adaptadas a tus necesidades de aprendizaje.",
+                community: "Análisis de Rendimiento",
+                communityDesc: "Rastrea tu progreso con análisis detallados, identifica tus fortalezas y debilidades, y obtén recomendaciones de estudio personalizadas.",
+                analytics: "Grupos de Estudio",
+                analyticsDesc: "Conéctate con compañeros de clase, comparte materiales de estudio y colabora en pruebas de práctica para mejorar tu experiencia de aprendizaje.",
+                testimonialsTitle: "Historias de Éxito",
+                testimonialsSubtitle: "Descubre cómo los estudiantes están mejorando sus calificaciones con nuestro generador de pruebas con IA",
+                aboutTitle: "Nuestra Misión",
+                aboutSubtitle: "Empoderando estudiantes y profesores con soluciones de aprendizaje impulsadas por IA",
+                forStudents: "Para Estudiantes",
+                forTeachers: "Para Profesores",
+                studentBenefits: "Creemos que cada estudiante merece apoyo de aprendizaje personalizado. Nuestra plataforma impulsada por IA te ayuda a:",
+                teacherBenefits: "Facilitamos la creación de pruebas y la evaluación para los educadores:",
+                studentList1: "Obtener pruebas de práctica personalizadas según tu estilo de aprendizaje",
+                studentList2: "Recibir retroalimentación instantánea sobre tu rendimiento",
+                studentList3: "Rastrear tu progreso e identificar áreas de mejora",
+                studentList4: "Aprender a tu propio ritmo con dificultad adaptativa",
+                studentList5: "Colaborar con compañeros de clase en grupos de estudio",
+                teacherList1: "Generar preguntas de prueba diversas automáticamente",
+                teacherList2: "Ahorrar tiempo en la preparación y calificación de pruebas",
+                teacherList3: "Obtener información sobre el rendimiento de los estudiantes",
+                teacherList4: "Crear pruebas personalizadas para diferentes niveles de aprendizaje",
+                teacherList5: "Rastrear el progreso de la clase e identificar estudiantes con dificultades"
+            },
+            fr: {
+                features: "Fonctionnalités",
+                about: "À propos",
+                contact: "Contact",
+                logout: "Déconnexion",
+                welcome: "Génération de Tests par IA",
+                heroText: "Transformez votre expérience d'étude avec notre générateur de tests intelligent. Obtenez des tests de pratique personnalisés, des retours instantanés et améliorez vos performances académiques avec une technologie d'IA de pointe.",
+                getStarted: "Commencer à Apprendre",
+                featuresTitle: "Fonctionnalités Intelligentes",
+                featuresSubtitle: "Découvrez l'avenir de la préparation aux tests avec notre plateforme avancée propulsée par l'IA",
+                ecoTracking: "Génération par IA",
+                ecoTrackingDesc: "Notre IA avancée analyse vos supports d'étude et génère des tests de pratique personnalisés adaptés à vos besoins d'apprentissage.",
+                community: "Analyses de Performance",
+                communityDesc: "Suivez votre progression avec des analyses détaillées, identifiez vos forces et faiblesses, et obtenez des recommandations d'étude personnalisées.",
+                analytics: "Groupes d'Étude",
+                analyticsDesc: "Connectez-vous avec vos camarades de classe, partagez des supports d'étude et collaborez sur des tests de pratique pour améliorer votre expérience d'apprentissage.",
+                testimonialsTitle: "Histoires de Réussite",
+                testimonialsSubtitle: "Découvrez comment les étudiants améliorent leurs notes avec notre générateur de tests IA",
+                aboutTitle: "Notre Mission",
+                aboutSubtitle: "Donner du pouvoir aux étudiants et aux enseignants avec des solutions d'apprentissage propulsées par l'IA",
+                forStudents: "Pour les Étudiants",
+                forTeachers: "Pour les Enseignants",
+                studentBenefits: "Nous croyons que chaque étudiant mérite un soutien d'apprentissage personnalisé. Notre plateforme propulsée par l'IA vous aide à :",
+                teacherBenefits: "Nous facilitons la création de tests et l'évaluation pour les éducateurs :",
+                studentList1: "Obtenir des tests de pratique personnalisés selon votre style d'apprentissage",
+                studentList2: "Recevoir des retours instantanés sur vos performances",
+                studentList3: "Suivre votre progression et identifier les domaines à améliorer",
+                studentList4: "Apprendre à votre rythme avec une difficulté adaptative",
+                studentList5: "Collaborer avec vos camarades dans des groupes d'étude",
+                teacherList1: "Générer automatiquement des questions de test variées",
+                teacherList2: "Gagner du temps sur la préparation et la notation des tests",
+                teacherList3: "Obtenir des insights sur les performances des étudiants",
+                teacherList4: "Créer des tests personnalisés pour différents niveaux d'apprentissage",
+                teacherList5: "Suivre la progression de la classe et identifier les étudiants en difficulté"
+            },
+            de: {
+                features: "Funktionen",
+                about: "Über uns",
+                contact: "Kontakt",
+                logout: "Abmelden",
+                welcome: "KI-gestützte Testgenerierung",
+                heroText: "Transformieren Sie Ihre Lernerfahrung mit unserem intelligenten Testgenerator. Erhalten Sie personalisierte Übungstests, sofortiges Feedback und verbessern Sie Ihre akademische Leistung mit modernster KI-Technologie.",
+                getStarted: "Lernen Beginnen",
+                featuresTitle: "Intelligente Funktionen",
+                featuresSubtitle: "Erleben Sie die Zukunft der Testvorbereitung mit unserer fortschrittlichen KI-gestützten Plattform",
+                ecoTracking: "KI-gestützte Generierung",
+                ecoTrackingDesc: "Unsere fortschrittliche KI analysiert Ihre Lernmaterialien und generiert personalisierte Übungstests, die auf Ihre Lernbedürfnisse zugeschnitten sind.",
+                community: "Leistungsanalysen",
+                communityDesc: "Verfolgen Sie Ihren Fortschritt mit detaillierten Analysen, identifizieren Sie Ihre Stärken und Schwächen und erhalten Sie personalisierte Lernempfehlungen.",
+                analytics: "Lerngruppen",
+                analyticsDesc: "Verbinden Sie sich mit Klassenkameraden, teilen Sie Lernmaterialien und arbeiten Sie an Übungstests zusammen, um Ihre Lernerfahrung zu verbessern.",
+                testimonialsTitle: "Erfolgsgeschichten",
+                testimonialsSubtitle: "Sehen Sie, wie Studenten ihre Noten mit unserem KI-Testgenerator verbessern",
+                aboutTitle: "Unsere Mission",
+                aboutSubtitle: "Stärkung von Studenten und Lehrern mit KI-gestützten Lernlösungen",
+                forStudents: "Für Studenten",
+                forTeachers: "Für Lehrer",
+                studentBenefits: "Wir glauben, dass jeder Student personalisierte Lernunterstützung verdient. Unsere KI-gestützte Plattform hilft Ihnen dabei:",
+                teacherBenefits: "Wir erleichtern die Testerstellung und Bewertung für Pädagogen:",
+                studentList1: "Personalisierten Übungstests basierend auf Ihrem Lernstil erhalten",
+                studentList2: "Sofortiges Feedback zu Ihrer Leistung erhalten",
+                studentList3: "Ihren Fortschritt verfolgen und Verbesserungsbereiche identifizieren",
+                studentList4: "In Ihrem eigenen Tempo mit adaptiver Schwierigkeit lernen",
+                studentList5: "Mit Klassenkameraden in Lerngruppen zusammenarbeiten",
+                teacherList1: "Automatisch verschiedene Testfragen generieren",
+                teacherList2: "Zeit bei der Testvorbereitung und -bewertung sparen",
+                teacherList3: "Einblicke in die Leistung der Studenten erhalten",
+                teacherList4: "Angepasste Tests für verschiedene Lernniveaus erstellen",
+                teacherList5: "Den Fortschritt der Klasse verfolgen und schwache Studenten identifizieren"
+            },
+            he: {
+                features: "תכונות",
+                about: "אודות",
+                contact: "צור קשר",
+                logout: "התנתק",
+                welcome: "יצירת מבחנים מבוססת בינה מלאכותית",
+                heroText: "שפרו את חווית הלמידה שלכם עם מחולל המבחנים החכם שלנו. קבלו מבחני תרגול מותאמים אישית, משוב מיידי, ושיפור ביצועים אקדמיים עם טכנולוגיית בינה מלאכותית מתקדמת.",
+                getStarted: "התחל ללמוד",
+                featuresTitle: "תכונות חכמות",
+                featuresSubtitle: "חוו את עתיד הכנת המבחנים עם הפלטפורמה המתקדמת שלנו מבוססת בינה מלאכותית",
+                ecoTracking: "יצירה מבוססת בינה מלאכותית",
+                ecoTrackingDesc: "הבינה המלאכותית המתקדמת שלנו מנתחת את חומרי הלמידה שלכם ומייצרת מבחני תרגול מותאמים אישית המותאמים לצרכי הלמידה שלכם.",
+                community: "ניתוח ביצועים",
+                communityDesc: "עקוב אחר התקדמותך עם ניתוחים מפורטים, זהה את החוזקות והחולשות שלך, וקבל המלצות למידה מותאמות אישית.",
+                analytics: "קבוצות לימוד",
+                analyticsDesc: "התחבר עם חברים לכיתה, שתף חומרי לימוד ושתף פעולה במבחני תרגול כדי לשפר את חווית הלמידה שלך.",
+                testimonialsTitle: "סיפורי הצלחה",
+                testimonialsSubtitle: "ראה כיצד סטודנטים משפרים את ציוניהם עם מחולל המבחנים מבוסס הבינה המלאכותית שלנו",
+                aboutTitle: "המשימה שלנו",
+                aboutSubtitle: "העצמת סטודנטים ומורים עם פתרונות למידה מבוססי בינה מלאכותית",
+                forStudents: "לסטודנטים",
+                forTeachers: "למורים",
+                studentBenefits: "אנו מאמינים שכל סטודנט ראוי לתמיכת למידה מותאמת אישית. הפלטפורמה מבוססת הבינה המלאכותית שלנו עוזרת לך:",
+                teacherBenefits: "אנו מקלים על יצירת מבחנים והערכה עבור מחנכים:",
+                studentList1: "קבל מבחני תרגול מותאמים אישית בהתאם לסגנון הלמידה שלך",
+                studentList2: "קבל משוב מיידי על ביצועיך",
+                studentList3: "עקוב אחר התקדמותך וזהה תחומים לשיפור",
+                studentList4: "למד בקצב שלך עם רמת קושי מותאמת",
+                studentList5: "שתף פעולה עם חברים לכיתה בקבוצות לימוד",
+                teacherList1: "צור שאלות מבחן מגוונות באופן אוטומטי",
+                teacherList2: "חסוך זמן בהכנת מבחנים ובדיקתם",
+                teacherList3: "קבל תובנות על ביצועי הסטודנטים",
+                teacherList4: "צור מבחנים מותאמים אישית לרמות למידה שונות",
+                teacherList5: "עקוב אחר התקדמות הכיתה וזהה סטודנטים מתקשים"
+            }
+        };
+
+        // Function to update text content based on selected language
+        function updateLanguage(lang) {
+            const t = translations[lang];
+            
+            // Update navigation
+            document.querySelector('a[href="#features"]').innerHTML = `<i class="fas fa-star"></i> ${t.features}`;
+            document.querySelector('a[href="#about"]').innerHTML = `<i class="fas fa-info-circle"></i> ${t.about}`;
+            document.querySelector('a[href="#contact"]').innerHTML = `<i class="fas fa-envelope"></i> ${t.contact}`;
+            document.querySelector('.logout-btn').innerHTML = `<i class="fas fa-sign-out-alt"></i> ${t.logout}`;
+
+            // Update hero section
+            document.querySelector('.hero h1').textContent = t.welcome;
+            document.querySelector('.hero p').textContent = t.heroText;
+            document.querySelector('.cta-button').textContent = t.getStarted;
+
+            // Update features section
+            document.querySelector('#features .section-title h2').textContent = t.featuresTitle;
+            document.querySelector('#features .section-title p').textContent = t.featuresSubtitle;
+
+            // Update feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards[0].querySelector('h3').textContent = t.ecoTracking;
+            featureCards[0].querySelector('p').textContent = t.ecoTrackingDesc;
+            featureCards[1].querySelector('h3').textContent = t.community;
+            featureCards[1].querySelector('p').textContent = t.communityDesc;
+            featureCards[2].querySelector('h3').textContent = t.analytics;
+            featureCards[2].querySelector('p').textContent = t.analyticsDesc;
+
+            // Update testimonials section
+            document.querySelector('#testimonials .section-title h2').textContent = t.testimonialsTitle;
+            document.querySelector('#testimonials .section-title p').textContent = t.testimonialsSubtitle;
+
+            // Update about section
+            document.querySelector('#about .section-title h2').textContent = t.aboutTitle;
+            document.querySelector('#about .section-title p').textContent = t.aboutSubtitle;
+            
+            const aboutCards = document.querySelectorAll('.about-card');
+            aboutCards[0].querySelector('h3').textContent = t.forStudents;
+            aboutCards[0].querySelector('p').textContent = t.studentBenefits;
+            aboutCards[0].querySelectorAll('li')[0].textContent = t.studentList1;
+            aboutCards[0].querySelectorAll('li')[1].textContent = t.studentList2;
+            aboutCards[0].querySelectorAll('li')[2].textContent = t.studentList3;
+            aboutCards[0].querySelectorAll('li')[3].textContent = t.studentList4;
+            aboutCards[0].querySelectorAll('li')[4].textContent = t.studentList5;
+            
+            aboutCards[1].querySelector('h3').textContent = t.forTeachers;
+            aboutCards[1].querySelector('p').textContent = t.teacherBenefits;
+            aboutCards[1].querySelectorAll('li')[0].textContent = t.teacherList1;
+            aboutCards[1].querySelectorAll('li')[1].textContent = t.teacherList2;
+            aboutCards[1].querySelectorAll('li')[2].textContent = t.teacherList3;
+            aboutCards[1].querySelectorAll('li')[3].textContent = t.teacherList4;
+            aboutCards[1].querySelectorAll('li')[4].textContent = t.teacherList5;
+        }
+
+        // Initialize language
+        updateLanguage(currentLang);
+
+        // Handle language change
+        const languageSelect = document.getElementById('languageSelect');
+        languageSelect.value = currentLang;
+        languageSelect.addEventListener('change', function() {
+            currentLang = this.value;
+            localStorage.setItem('language', currentLang);
+            updateLanguage(currentLang);
+        });
+
+        // Initialize EmailJS with your public key
+        emailjs.init("6AYmgbVc3QwNR8XdN");
+
+        // Handle form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitBtn = form.querySelector('.submit-btn');
+            const formMessage = document.getElementById('formMessage');
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = '';
+            formMessage.style.display = 'none';
+            
+            // Get form data
+            const templateParams = {
+                to_name: 'AI Test Generator Team',
+                from_name: document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                message: document.getElementById('message').value,
+                reply_to: document.getElementById('email').value
+            };
+            
+            // Send email using EmailJS
+            emailjs.send("service_meyd6fo", "template_kh82jlw", templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Show success message
+                    formMessage.textContent = 'Thank you for your message. We will get back to you soon!';
+                    formMessage.className = 'form-message success';
+                    formMessage.style.display = 'block';
+                    
+                    // Scroll to message
+                    formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                })
+                .catch(function(error) {
+                    console.error('FAILED...', error);
+                    formMessage.textContent = 'Error sending message. Please try again later.';
+                    formMessage.className = 'form-message error';
+                    formMessage.style.display = 'block';
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.classList.remove('loading');
+                    submitBtn.textContent = 'Send Message';
+                });
+        });
+    </script>
+</body>
+</html> 
